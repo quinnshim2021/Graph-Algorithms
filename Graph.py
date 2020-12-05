@@ -1,5 +1,7 @@
 from collections import defaultdict
 from sys import maxsize
+import networkx as nx 
+import matplotlib.pyplot as plt
 
 class Graph:
     def __init__(self, vertices):
@@ -9,6 +11,21 @@ class Graph:
     # start node, end node, weight
     def addEdge(self, u, v, w): 
         self.graph[u].append((v, w))
+    
+    def draw(self):
+        G = nx.DiGraph()
+        edges = []
+        for startNode in self.graph:
+            for edge in self.graph[startNode]:
+                edges.append((startNode, edge[0], edge[1])) # start node, end node, weight
+
+        G.add_weighted_edges_from(edges)
+        pos = nx.spring_layout(G)
+        plt.figure()
+        nx.draw(G, pos, edge_color="black", labels={node:node for node in G.nodes()}) # draw nodes
+        nx.draw_networkx_edge_labels(G, pos, edge_labels={(i[0], i[1]): i[2] for i in edges}) # draw edges and labels
+        plt.axis('off')
+        plt.show()
 
     '''
         Floyd Cycle Determining Algorithms
@@ -94,7 +111,7 @@ class Graph:
     def bst(self, root):
         stack = [root]
         visited = [False] * self.size
-        visited[0] = True
+        visited[root] = True
 
         bst = True
 
@@ -102,15 +119,17 @@ class Graph:
             s = stack.pop(0)
 
             if len(self.graph[s]) == 2:
+                print(self.graph[s][0][0], self.graph[s][1][0])
                 if not s > self.graph[s][0][0] or not s < self.graph[s][1][0]:
                     bst = False
 
                 for child in self.graph[s]:
                     if not visited[child[0]]:
+                        print(child[0])
                         stack.append(child[0])
             elif len(self.graph[s]) != 0:
                 print("Not a Binary Tree or Binary Search Tree\n")
-                return 
+                return
         if bst:
             print("Is a Binary Search Tree\n")
         else:
@@ -148,6 +167,7 @@ class Graph:
         for edge in finalTree:
             print(edge)
         print()
+    
 
                     
 

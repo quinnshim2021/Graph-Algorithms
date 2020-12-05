@@ -1,130 +1,125 @@
 from Graph import Graph
 '''
-    All nodes must start at 0 and only increment by 1
-    Must have number of vertices correct, if updating later we can update that variable
+    problems:
+        BT/BST aren't working (problem with undirected graphs, roots other than 0)
+    
+    important notes:
+        nodes must start at 0 and increment by 1
+            problems if not true
+        if weights for same edge differ, last edge's weight will be used
 '''
+# default to some Graph, will be global graph used for all operations
+g = Graph(3)
+g.addEdge(0, 1, 0)
+g.addEdge(0, 2, 4)
+
+def create():
+    global g
+
+    warning = input("Warning: Creating a new graph will replace current graph. Is this okay? y/n ")
+
+    if warning == "y":
+        nodes = int(input("How many nodes? Must ensure this is correct. "))
+        g = Graph(nodes)
+
+        creating = "y"
+        print("\nGraph is created by creating edges. Will enter start node, end node, and the weight between them\n")
+
+        while creating == "y":
+            start = int(input("Enter starting node: "))
+            end = int(input("Enter ending node: "))
+            weight = int(input("Enter edge weight: "))
+            g.addEdge(start, end, weight)
+
+            creating = input("Add another edge? y/n ")
+            
 
 # directed or undirected, unweighted graph
+# takes in start node
 def runFloyd():
-    g = Graph(5)
-    g.addEdge(0, 1, 0)
-    g.addEdge(1, 2, 0)
-    g.addEdge(2, 3, 0)
-    g.addEdge(3, 4, 0)
+    global g
 
-    # 0 -> 1 -> 2 -> 3 -> 4
-    g.cycleDetection(0) # 0 is start node
-
-    g.addEdge(4, 3, 0)
-    
-    # 0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 3...
-    g.cycleDetection(0)
+    if g != None:
+        start = int(input("Which node is the starting node? "))
+        g.cycleDetection(start)
 
 # directed or undirected, unweighted graph
+# takes in root node
 def runBFT():
-    g = Graph(5)
-    g.addEdge(0, 1, 0)
-    g.addEdge(0, 2, 0)
-    g.addEdge(0, 3, 0)
-    g.addEdge(1, 0, 0)
-    g.addEdge(2, 0, 0)
-    g.addEdge(3, 0, 0)
-    g.addEdge(2, 4, 0)
-    g.addEdge(4, 3, 0)
-    
-    g.bft(0)
+    global g
+
+    if g != None:
+        root = int(input("Which node is the root? "))
+        g.bft(root)
 
 # undirected or undirected, unweighted graph
+# takes in root node
 def runDFT():
-    g = Graph(5)
-    g.addEdge(0, 1, 0)
-    g.addEdge(0, 2, 0)
-    g.addEdge(0, 3, 0)
-    g.addEdge(1, 0, 0)
-    g.addEdge(2, 0, 0)
-    g.addEdge(3, 0, 0)
-    g.addEdge(2, 4, 0)
-    g.addEdge(4, 3, 0)
+    global g
 
-    g.dft(0)
+    if g != None:
+        root = int(input("Which node is the root? "))
+        g.dft(root)
 
 # directed (no two-way edges), a-cyclic, unweighted graph
+# bst takes in root node
 def runBST():
-    g = Graph(6)
-    g.addEdge(3, 1, 0)
-    g.addEdge(3, 4, 0)
-    g.addEdge(1, 0, 0)
-    g.addEdge(1, 2, 0)
+    global g
 
-    # BST
-    g.bst(3)
-
-    g.addEdge(4, 5, 0)
-    g.addEdge(4, 0, 0)
-
-    # BT
-    g.bst(3)
-
-    g.addEdge(2, 5, 0)
-
-    # Nothing
-    g.bst(3)
+    if g != None:
+        root = int(input("Which node is the root? "))
+        g.bst(root)
 
 # undirected, weighted graph
+# prims takes in start node
 def runPrim():
-    g = Graph(9)
-    g.addEdge(0, 1, 4)
-    g.addEdge(0, 7, 8)
-    g.addEdge(1, 0, 4)
-    g.addEdge(1, 2, 8)
-    g.addEdge(1, 7, 11)
-    g.addEdge(7, 0, 8)
-    g.addEdge(7, 1, 11)
-    g.addEdge(7, 8, 7)
-    g.addEdge(7, 6, 1)
-    g.addEdge(2, 1, 8)
-    g.addEdge(2, 8, 2)
-    g.addEdge(2, 5, 4)
-    g.addEdge(2, 3, 7)
-    g.addEdge(6, 7, 1)
-    g.addEdge(6, 8, 6)
-    g.addEdge(6, 5, 2)
-    g.addEdge(8, 2, 2)
-    g.addEdge(8, 6, 6)
-    g.addEdge(8, 7, 7)
-    g.addEdge(5, 6, 2)
-    g.addEdge(5, 2, 4)
-    g.addEdge(5, 3, 14)
-    g.addEdge(5, 4, 10)
-    g.addEdge(3, 2, 7)
-    g.addEdge(3, 5, 14)
-    g.addEdge(3, 4, 9)
-    g.addEdge(4, 3, 9)
-    g.addEdge(4, 5, 10)
+    global g
+    
+    if g != None:
+        start = int(input("Which node is the start node? "))
+        g.prims(start)
 
-    g.prims(0)
+# draws graph
+def runDraw():
+    global g
+
+    if g != None:
+        g.draw()
+
+# rules of program
+def printHowTo():
+    print("\nRules: Nodes and weights must be represented as integers. Nodes must start at 0 and increment by 1. It is important to have number of nodes correct in 'Create'. \nGraph will be undirected if you create an edge each way.\n")
 
 def run():
     while True:
         option = input(
             """Select an algorithm:
-    1. Floyd's cycle determining/locating
-    2. Breadth First Traversal
-    3. Depth First Traversal
-    4. Is Binary Tree?
-    5. Prim's Minimum Spanning Tree
+    1. Create Graph
+    2. Draw Current Graph
+    3. Floyd's Cycle Determining/Locating Algorithm
+    4. Breadth First Traversal
+    5. Depth First Traversal
+    6. Is Binary Tree?
+    7. Prim's Minimum Spanning Tree
+    8. How To
     x. Quit
     : """)
         if option == "1":
-            runFloyd()
+            create()
         elif option == "2":
-            runBFT()
+            runDraw()
         elif option == "3":
-            runDFT()
+            runFloyd()
         elif option == "4":
-            runBST()
+            runBFT()
         elif option == "5":
+            runDFT()
+        elif option == "6":
+            runBST()
+        elif option == "7":
             runPrim()
+        elif option == "8":
+            printHowTo()
         elif option == "x":
             return
 
